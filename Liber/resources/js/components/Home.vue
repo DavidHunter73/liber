@@ -73,7 +73,9 @@ export default {
       this.postSearch = this.preSearch;
     },
     BookInformation(isbn) {
-      this.$router.push("book?isbn=" + isbn);
+      this.$router.push(
+        "/dhernandez/ProyectoFinal/liber/Liber/public/book/" + isbn
+      );
     },
   },
 };

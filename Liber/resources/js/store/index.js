@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import currentUser from "../modules/currentUser"
+import apiBooks from "../modules/apiBooks"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        currentUser
+        apiBooks
     }
 })

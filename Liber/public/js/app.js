@@ -3846,11 +3846,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: ["isbn"],
   data: function data() {
     return {
-      isbn: "???",
       rating: 0
     };
+  },
+  computed: {
+    isbn2: function isbn2() {
+      return this.isbn + "a";
+    }
   }
 });
 
@@ -3919,11 +3924,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {};
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    this.$store.dispatch("apiBooks/getApiValues", this.user);
+  }
 });
 
 /***/ }),
@@ -4013,7 +4023,7 @@ __webpack_require__.r(__webpack_exports__);
       this.postSearch = this.preSearch;
     },
     BookInformation: function BookInformation(isbn) {
-      this.$router.push("book?isbn=" + isbn);
+      this.$router.push("/dhernandez/ProyectoFinal/liber/Liber/public/book/" + isbn);
     }
   }
 });
@@ -4058,13 +4068,13 @@ __webpack_require__.r(__webpack_exports__);
   computed: {
     user2: {
       get: function get() {
-        return this.$store.state.currentUser.user;
+        return this.$store.state.apiBooks.user;
       }
     }
   },
   methods: {
     login: function login() {
-      this.$store.dispatch("currentUser/loginUser", this.user);
+      this.$store.dispatch("apiBooks/loginUser", this.user);
     }
   }
 });
@@ -4147,19 +4157,20 @@ Vue.component('star-rating', (vue_star_rating__WEBPACK_IMPORTED_MODULE_0___defau
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__.default({
   mode: 'history',
   routes: [{
-    path: '/dhernandez/ProyectoFinal/Liber/public/',
+    path: '/dhernandez/ProyectoFinal/liber/Liber/public/',
     component: _components_Home_vue__WEBPACK_IMPORTED_MODULE_5__.default
   }, {
-    path: '/dhernandez/ProyectoFinal/Liber/public/example/',
+    path: '/dhernandez/ProyectoFinal/liber/Liber/public/example/',
     component: _components_VueExample_vue__WEBPACK_IMPORTED_MODULE_4__.default
   }, {
-    path: '/dhernandez/ProyectoFinal/Liber/public/book/',
-    component: _components_Book_vue__WEBPACK_IMPORTED_MODULE_6__.default
+    path: '/dhernandez/ProyectoFinal/liber/Liber/public/book/:isbn',
+    component: _components_Book_vue__WEBPACK_IMPORTED_MODULE_6__.default,
+    props: true
   }, {
-    path: '/dhernandez/ProyectoFinal/Liber/public/genre/',
+    path: '/dhernandez/ProyectoFinal/liber/Liber/public/genre/',
     component: _components_Genre_vue__WEBPACK_IMPORTED_MODULE_7__.default
   }, {
-    path: '/dhernandez/ProyectoFinal/Liber/public/login/',
+    path: '/dhernandez/ProyectoFinal/Liber/liber/public/login/',
     component: _components_Login_vue__WEBPACK_IMPORTED_MODULE_8__.default
   }]
 }); //Vue.component('pagination', require('laravel-vue-pagination'));
@@ -4206,10 +4217,10 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /***/ }),
 
-/***/ "./resources/js/modules/currentUser.js":
-/*!*********************************************!*\
-  !*** ./resources/js/modules/currentUser.js ***!
-  \*********************************************/
+/***/ "./resources/js/modules/apiBooks.js":
+/*!******************************************!*\
+  !*** ./resources/js/modules/apiBooks.js ***!
+  \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -4221,21 +4232,21 @@ var state = {
   user: {
     email: "prueba@gmail.com",
     name: "Nose"
-  }
+  },
+  api: {
+    isbn: String,
+    title: String,
+    author: String,
+    cover: String,
+    rating: Float32Array
+  },
+  dataBase: []
 };
 var getters = {};
 var actions = {
   loginUser: function loginUser(_ref, user) {
     var state = _ref.state,
         commit = _ref.commit;
-    //No funciona, da error 405
-
-    /*axios.post("api/books", {
-        author: user.name
-    })
-        .then(response => {
-            console.log(response.data);
-        })*/
     axios.get("api/books").then(function (response) {
       response.data.forEach(function (u) {
         if (u.author == user.name) {
@@ -4245,6 +4256,42 @@ var actions = {
           localStorage.setItem("book_title", u.title);
           window.location.replace("/dhernandez/ProyectoFinal/Liber/public/");
         }
+      });
+    });
+  },
+  getApiValues: function getApiValues(_ref2
+  /*, api*/
+  ) {
+    var state = _ref2.state,
+        commit = _ref2.commit;
+    //Guardando los resultados de la base de datos en el state
+    axios.get("api/books").then(function (response) {
+      state.dataBase = response.data;
+      console.log(state.dataBase);
+    });
+    axios({
+      method: 'get',
+      url: 'https://jsonplaceholder.typicode.com/users',
+      responseType: 'stream'
+    }).then(function (response) {
+      var exists = false;
+      response.data.forEach(function (apiBook) {
+        //Comprueba si el libro existe en la base de datos
+        state.dataBase.forEach(function (dbBook) {
+          if (dbBook.isbn == apiBook.id) {
+            exists = true;
+            console.log("Existe!");
+          }
+        });
+        console.log(exists); //Si no existe, añade el libro a la base de datos
+
+        if (!exists) {
+          axios.post("api/booksStore", apiBook).then(function (response) {
+            console.log("Guardado el libro con el isbn " + apiBook.id); //console.log(response);
+          });
+        }
+
+        exists = false;
       });
     });
   }
@@ -4273,14 +4320,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-/* harmony import */ var _modules_currentUser__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/currentUser */ "./resources/js/modules/currentUser.js");
+/* harmony import */ var _modules_apiBooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../modules/apiBooks */ "./resources/js/modules/apiBooks.js");
 
 
 
 vue__WEBPACK_IMPORTED_MODULE_1__.default.use(vuex__WEBPACK_IMPORTED_MODULE_2__.default);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_2__.default.Store({
   modules: {
-    currentUser: _modules_currentUser__WEBPACK_IMPORTED_MODULE_0__.default
+    apiBooks: _modules_apiBooks__WEBPACK_IMPORTED_MODULE_0__.default
   }
 }));
 
@@ -22471,7 +22518,12 @@ var render = function() {
     "div",
     [
       _c("p", [
-        _vm._v("Soy el libro con el isbn " + _vm._s(_vm.isbn) + ", que chulo")
+        _vm._v(
+          "Soy el libro con el isbn " +
+            _vm._s(_vm.isbn) +
+            ", que chulo " +
+            _vm._s(_vm.isbn2)
+        )
       ]),
       _vm._v(" "),
       _c("star-rating", {
@@ -22553,7 +22605,7 @@ var render = function() {
         "router-link",
         {
           staticClass: "nav-link",
-          attrs: { to: "/dhernandez/ProyectoFinal/Liber/public/example/" }
+          attrs: { to: "/dhernandez/ProyectoFinal/liber/Liber/public/example/" }
         },
         [_vm._v("\n    Example de Vue\n  ")]
       ),
@@ -22564,7 +22616,7 @@ var render = function() {
         "router-link",
         {
           staticClass: "nav-link",
-          attrs: { to: "/dhernandez/ProyectoFinal/Liber/public/" }
+          attrs: { to: "/dhernandez/ProyectoFinal/liber/Liber/public/" }
         },
         [_vm._v("\n    Home\n  ")]
       ),
@@ -22575,7 +22627,7 @@ var render = function() {
         "router-link",
         {
           staticClass: "nav-link",
-          attrs: { to: "/dhernandez/ProyectoFinal/Liber/public/genre" }
+          attrs: { to: "/dhernandez/ProyectoFinal/liber/Liber/public/genre" }
         },
         [_vm._v("\n    Genero\n  ")]
       ),
@@ -22586,7 +22638,7 @@ var render = function() {
         "router-link",
         {
           staticClass: "nav-link",
-          attrs: { to: "/dhernandez/ProyectoFinal/Liber/public/login" }
+          attrs: { to: "/dhernandez/ProyectoFinal/liber/Liber/public/login" }
         },
         [_vm._v("\n    Formulario de Login\n  ")]
       )

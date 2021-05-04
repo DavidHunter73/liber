@@ -22,23 +22,24 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/dhernandez/ProyectoFinal/Liber/public/',
+            path: '/dhernandez/ProyectoFinal/liber/Liber/public/',
             component: home
         },
         {
-            path: '/dhernandez/ProyectoFinal/Liber/public/example/',
+            path: '/dhernandez/ProyectoFinal/liber/Liber/public/example/',
             component: vue_example
         },
         {
-            path: '/dhernandez/ProyectoFinal/Liber/public/book/',
-            component: book
+            path: '/dhernandez/ProyectoFinal/liber/Liber/public/book/:isbn',
+            component: book,
+            props: true
         },
         {
-            path: '/dhernandez/ProyectoFinal/Liber/public/genre/',
+            path: '/dhernandez/ProyectoFinal/liber/Liber/public/genre/',
             component: genre
         },
         {
-            path: '/dhernandez/ProyectoFinal/Liber/public/login/',
+            path: '/dhernandez/ProyectoFinal/Liber/liber/public/login/',
             component: login
         }
     ]

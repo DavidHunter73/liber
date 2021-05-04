@@ -3,7 +3,7 @@
     <h2>HEADER</h2>
 
     <router-link
-      to="/dhernandez/ProyectoFinal/Liber/public/example/"
+      to="/dhernandez/ProyectoFinal/liber/Liber/public/example/"
       class="nav-link"
     >
       Example de Vue
@@ -11,14 +11,17 @@
 
     <br />
 
-    <router-link to="/dhernandez/ProyectoFinal/Liber/public/" class="nav-link">
+    <router-link
+      to="/dhernandez/ProyectoFinal/liber/Liber/public/"
+      class="nav-link"
+    >
       Home
     </router-link>
 
     <br />
 
     <router-link
-      to="/dhernandez/ProyectoFinal/Liber/public/genre"
+      to="/dhernandez/ProyectoFinal/liber/Liber/public/genre"
       class="nav-link"
     >
       Genero
@@ -27,7 +30,7 @@
     <br />
 
     <router-link
-      to="/dhernandez/ProyectoFinal/Liber/public/login"
+      to="/dhernandez/ProyectoFinal/liber/Liber/public/login"
       class="nav-link"
     >
       Formulario de Login
@@ -40,7 +43,9 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
+  mounted() {
+    this.$store.dispatch("apiBooks/getApiValues", this.user);
+  },
 };
 </script>
 

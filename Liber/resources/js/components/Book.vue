@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Soy el libro con el isbn {{ isbn }}, que chulo</p>
+    <p>Soy el libro con el isbn {{ isbn }}, que chulo {{ isbn2 }}</p>
     <star-rating
       v-model="rating"
       v-bind:rating="rating"
@@ -13,11 +13,16 @@
 import StarRating from "vue-star-rating";
 
 export default {
+  props: ["isbn"],
   data() {
     return {
-      isbn: "???",
       rating: 0,
     };
+  },
+  computed: {
+    isbn2() {
+      return this.isbn + "a";
+    },
   },
 };
 </script>

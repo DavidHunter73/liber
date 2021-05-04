@@ -37,6 +37,17 @@ class BookController extends Controller
     public function store(Request $request)
     {
         //
+         $book = new Book;
+        //Declaramos el nombre con el nombre enviado en el request
+         $book->isbn = $request->id;
+         $book->title = $request->username;
+         $book->author = $request->name;
+         $book->cover = "";
+         $book->rating = 0;
+         // Guardamos el cambio en nuestro modelo
+         $book->save();
+
+        //return $request;
     }
 
     /**

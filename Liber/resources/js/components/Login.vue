@@ -26,13 +26,13 @@ export default {
   computed: {
     user2: {
       get() {
-        return this.$store.state.currentUser.user;
+        return this.$store.state.apiBooks.user;
       },
     },
   },
   methods: {
     login() {
-      this.$store.dispatch("currentUser/loginUser", this.user);
+      this.$store.dispatch("apiBooks/loginUser", this.user);
     },
   },
 };
