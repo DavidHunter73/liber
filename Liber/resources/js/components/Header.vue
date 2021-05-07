@@ -43,9 +43,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    this.$store.dispatch("apiBooks/getApiValues", this.user);
-  },
 };
 </script>
 

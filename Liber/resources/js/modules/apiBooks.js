@@ -3,13 +3,7 @@ const state = {
         email: "prueba@gmail.com",
         name: "Nose"
     },
-    api: {
-        isbn: String,
-        title: String,
-        author: String,
-        cover: String,
-        rating: Float32Array
-    },
+    allApi: [],
     dataBase: []
 };
 const getters = {};
@@ -35,47 +29,71 @@ const actions = {
         });
     },
 
-    getApiValues({ state, commit }/*, api*/) {
+    getApiValues({ state, commit }, { searchString, booksDB }) {
 
         //Guardando los resultados de la base de datos en el state
-        axios.get("api/books").then((response) => {
-            state.dataBase = response.data;
-            console.log(state.dataBase);
-        });
+        state.dataBase = booksDB;
 
+        let booksToStore = { "books": [] };
 
-        axios({
-            method: 'get',
-            url: 'https://jsonplaceholder.typicode.com/users',
-            responseType: 'stream'
-        }).then(function (response) {
-            let exists = false;
+        console.log(state.dataBase);
 
-            response.data.forEach(apiBook => {
-                //Comprueba si el libro existe en la base de datos
-                state.dataBase.forEach(dbBook => {
-                    if (dbBook.isbn == apiBook.id) {
-                        exists = true;
-                        console.log("Existe!");
+        console.log("El libro buscado es: " + searchString);
+
+        //ESTO ES EL RAINFOREST QUE GUARDA COSAS NUEVAS EN LA BASE DE DATOSd
+        const axios = require('axios');
+
+        // Parametros de Rainforest
+        const params = {
+            api_key: "5FFFD5CD73DA47BBA702957211E0B82D",
+            amazon_domain: "amazon.com",
+            type: "search",
+            search_term: searchString
+        }
+
+        // Haz the http GET request a la API de Rainforest
+        axios.get('https://api.rainforestapi.com/request', { params })
+            .then(response => {
+                let exists = false;
+
+                console.log(response.data.search_results);
+
+                //Por cada cosa encontrada en rainforest...
+                response.data.search_results.forEach(apiBook => {
+
+                    console.log("Esto es un apiBook: " + apiBook.asin);
+
+                    //Comprueba si el libro existe en la base de datos
+                    state.dataBase.forEach(dbBook => {
+                        if (dbBook.isbn == apiBook.asin) {
+                            exists = true;
+                            console.log("Existe!");
+                        }
+                    });
+
+                    //Si no existe, añade el libro a la base de datos
+                    if (!exists) {
+                        //booksToStoreObj = JSON.parse(booksToStore);
+                        booksToStore['books'].push(apiBook);
+
+                        //axios.post("api/booksStore", booksToStore);
                     }
+
+                    exists = false;
+
                 });
+                console.log("El Axios de Rainforest ha terminado");
+            });
 
-                console.log(exists);
-
-                //Si no existe, añade el libro a la base de datos
-                if (!exists) {
-                    axios.post("api/booksStore", apiBook)
-                        .then((response) => {
-                            console.log("Guardado el libro con el isbn " + apiBook.id);
-                            //console.log(response);
-                        });
-                }
-
-                exists = false;
-
+        //let booksToStoreString = JSON.stringify(booksToStore);
+        //console.log(booksToStoreString);
+        axios.post("api/booksStore", booksToStore).then(() => {
+            axios.get("api/books").then((response) => {
+                return response;
             });
         });
     },
+
 };
 const mutations = {};
 

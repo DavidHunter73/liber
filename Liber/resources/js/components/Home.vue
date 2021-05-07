@@ -63,15 +63,27 @@ export default {
       );
     },
   },
-  mounted() {
-    axios.get("api/books").then((response) => {
-      this.books = response.data;
-    });
-  },
+  mounted() {},
   methods: {
     SearchBooks() {
       this.postSearch = this.preSearch;
+
+      axios.get("api/books").then((response) => {
+        this.books = this.$store.dispatch("apiBooks/getApiValues", {
+          searchString: this.postSearch,
+          booksDB: response.data,
+        });
+        /*.then(() => {
+            axios.get("api/books").then((response) => {
+              console.log("Segunda base de datos obtenida!");
+            });
+          });*/
+
+        this.books = response.data;
+        console.log(this.books);
+      });
     },
+
     BookInformation(isbn) {
       this.$router.push(
         "/dhernandez/ProyectoFinal/liber/Liber/public/book/" + isbn

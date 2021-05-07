@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
@@ -36,17 +37,23 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
+        //Log::info($request->input("books"));
         //
-         $book = new Book;
-        //Declaramos el nombre con el nombre enviado en el request
-         $book->isbn = $request->id;
-         $book->title = $request->username;
-         $book->author = $request->name;
-         $book->cover = "";
-         $book->rating = 0;
-         // Guardamos el cambio en nuestro modelo
-         $book->save();
+        //foreach ($request->get('booksToStore' . array_values([])) as $b) {
+        foreach ($request->input('books') as $b){
+            //Log::info($b["asin"]);
+            $book = new Book;
 
+            //Declaramos el nombre con el nombre enviado en el request
+            $book->isbn = $b["asin"];
+            $book->title =  $b["title"];
+            $book->author = "";
+            $book->cover = "";
+            $book->rating = 0;
+            
+            // Guardamos el cambio en nuestro modelo
+            $book->save();
+        }
         //return $request;
     }
 
