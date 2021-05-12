@@ -3844,17 +3844,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["isbn"],
   data: function data() {
     return {
-      rating: 0
+      rating: 0,
+      user_id: 1
     };
   },
   computed: {
     isbn2: function isbn2() {
       return this.isbn + "a";
+    }
+  },
+  methods: {
+    rateBook: function rateBook(user_id, book_isbn, rating) {
+      console.log("User_id: " + user_id + "\nBook_isbn: " + book_isbn + "\nRating: " + rating);
+      axios.post("api/rateBook", {
+        user_id: user_id,
+        book_isbn: book_isbn,
+        rating: rating
+      }).then(function () {
+        console.log("Done!");
+      });
     }
   }
 });
@@ -4013,20 +4027,61 @@ __webpack_require__.r(__webpack_exports__);
     SearchBooks: function SearchBooks() {
       var _this = this;
 
-      this.postSearch = this.preSearch;
-      axios.get("api/books").then(function (response) {
-        _this.books = _this.$store.dispatch("apiBooks/getApiValues", {
-          searchString: _this.postSearch,
-          booksDB: response.data
-        });
-        /*.then(() => {
-            axios.get("api/books").then((response) => {
-              console.log("Segunda base de datos obtenida!");
-            });
-          });*/
+      //Actualiza la variable postSearch, que será usada a continuación
+      this.postSearch = this.preSearch; //Saca información de la base de datos
 
-        _this.books = response.data;
-        console.log(_this.books);
+      /*axios.get("api/books").then((booksDB) => {
+        //Variable que guardará los libros que no estén en la base de datos
+        let booksToStore = { books: [] };
+          console.log(booksDB);
+        console.log("El libro buscado es: " + this.postSearch);
+          //ESTO ES EL RAINFOREST QUE GUARDA COSAS NUEVAS EN LA BASE DE DATOS
+        const axios = require("axios");
+          // Parametros de Rainforest
+        const params = {
+          api_key: "B7E49921BBA24B8F8CD4335965DB8DA5",
+          amazon_domain: "amazon.com",
+          type: "search",
+          search_term: this.postSearch,
+        };
+          // Haz el GET request a la API de Rainforest
+        axios
+          .get("https://api.rainforestapi.com/request", { params })
+          .then((response) => {
+            let exists = false;
+              console.log(response.data.search_results);
+              //Por cada cosa encontrada en rainforest...
+            response.data.search_results.forEach((apiBook) => {
+              console.log("Esto es un apiBook: " + apiBook.asin);
+                //Comprueba si el libro existe en la base de datos
+              booksDB.forEach((dbBook) => {
+                if (dbBook.isbn == apiBook.asin) {
+                  exists = true;
+                  console.log("Existe!");
+                }
+              });
+                //Si no existe, añade el libro a la base de datos
+              if (!exists) {
+                //booksToStoreObj = JSON.parse(booksToStore);
+                booksToStore["books"].push(apiBook);
+                  //axios.post("api/booksStore", booksToStore);
+              }
+                exists = false;
+            });
+            console.log("El Axios de Rainforest ha terminado");
+          });
+          //let booksToStoreString = JSON.stringify(booksToStore);
+        //console.log(booksToStoreString);
+        axios.post("api/booksStore", booksToStore).then(() => {
+          axios.get("api/books").then((response) => {
+            this.books = response.data;
+            console.log("Segunda base de datos obtenida!");
+          });
+        });
+      });*/
+
+      axios.get("api/books").then(function (response) {
+        _this.books = response.data; //console.log("Segunda base de datos obtenida!");
       });
     },
     BookInformation: function BookInformation(isbn) {
@@ -4239,9 +4294,7 @@ var state = {
   user: {
     email: "prueba@gmail.com",
     name: "Nose"
-  },
-  allApi: [],
-  dataBase: []
+  }
 };
 var getters = {};
 var actions = {
@@ -4257,62 +4310,6 @@ var actions = {
           localStorage.setItem("book_title", u.title);
           window.location.replace("/dhernandez/ProyectoFinal/Liber/public/");
         }
-      });
-    });
-  },
-  getApiValues: function getApiValues(_ref2, _ref3) {
-    var state = _ref2.state,
-        commit = _ref2.commit;
-    var searchString = _ref3.searchString,
-        booksDB = _ref3.booksDB;
-    //Guardando los resultados de la base de datos en el state
-    state.dataBase = booksDB;
-    var booksToStore = {
-      "books": []
-    };
-    console.log(state.dataBase);
-    console.log("El libro buscado es: " + searchString); //ESTO ES EL RAINFOREST QUE GUARDA COSAS NUEVAS EN LA BASE DE DATOSd
-
-    var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); // Parametros de Rainforest
-
-
-    var params = {
-      api_key: "5FFFD5CD73DA47BBA702957211E0B82D",
-      amazon_domain: "amazon.com",
-      type: "search",
-      search_term: searchString
-    }; // Haz the http GET request a la API de Rainforest
-
-    axios.get('https://api.rainforestapi.com/request', {
-      params: params
-    }).then(function (response) {
-      var exists = false;
-      console.log(response.data.search_results); //Por cada cosa encontrada en rainforest...
-
-      response.data.search_results.forEach(function (apiBook) {
-        console.log("Esto es un apiBook: " + apiBook.asin); //Comprueba si el libro existe en la base de datos
-
-        state.dataBase.forEach(function (dbBook) {
-          if (dbBook.isbn == apiBook.asin) {
-            exists = true;
-            console.log("Existe!");
-          }
-        }); //Si no existe, añade el libro a la base de datos
-
-        if (!exists) {
-          //booksToStoreObj = JSON.parse(booksToStore);
-          booksToStore['books'].push(apiBook); //axios.post("api/booksStore", booksToStore);
-        }
-
-        exists = false;
-      });
-      console.log("El Axios de Rainforest ha terminado");
-    }); //let booksToStoreString = JSON.stringify(booksToStore);
-    //console.log(booksToStoreString);
-
-    axios.post("api/booksStore", booksToStore).then(function () {
-      axios.get("api/books").then(function (response) {
-        return response;
       });
     });
   }
@@ -22549,6 +22546,11 @@ var render = function() {
       _vm._v(" "),
       _c("star-rating", {
         attrs: { rating: _vm.rating, "show-rating": false },
+        on: {
+          "rating-selected": function($event) {
+            return _vm.rateBook(_vm.user_id, _vm.isbn, _vm.rating)
+          }
+        },
         model: {
           value: _vm.rating,
           callback: function($$v) {

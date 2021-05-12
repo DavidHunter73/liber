@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DbController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,3 +24,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('users', [DbController::class, 'index']);
 Route::get('books', [BookController::class, 'index']);
 Route::post('booksStore', [BookController::class, 'store']);
+
+Route::post('rateBook', [BookRatingController::class, 'store']);
+Route::post('reRateBook', [BookRatingController::class, 'edit']);
