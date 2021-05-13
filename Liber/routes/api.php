@@ -22,8 +22,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('users', [DbController::class, 'index']);
+
 Route::get('books', [BookController::class, 'index']);
+Route::get('averageRating', [BookController::class, 'average']);
 Route::post('booksStore', [BookController::class, 'store']);
 
 Route::post('rateBook', [BookRatingController::class, 'store']);
-Route::post('reRateBook', [BookRatingController::class, 'edit']);

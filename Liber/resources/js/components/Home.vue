@@ -37,6 +37,13 @@
           ></star-rating>
         </div>
       </div>
+
+      <star-rating
+        v-model="rating"
+        v-bind:rating="rating"
+        v-bind:show-rating="false"
+        @rating-selected="rateBook"
+      ></star-rating>
     </body>
   </html>
 </template>
@@ -50,6 +57,9 @@ export default {
       preSearch: "",
       postSearch: "",
       books: [],
+      user_id: "2",
+      book_isbn: "1",
+      rating: 0,
     };
   },
   computed: {
@@ -133,6 +143,7 @@ export default {
 
       axios.get("api/books").then((response) => {
         this.books = response.data;
+        console.log(response.data);
         //console.log("Segunda base de datos obtenida!");
       });
     },
@@ -141,6 +152,22 @@ export default {
       this.$router.push(
         "/dhernandez/ProyectoFinal/liber/Liber/public/book/" + isbn
       );
+    },
+
+    rateBook() {
+      //axios.get("api/showRatings").then((response) => {
+      //  response.data;
+      //});
+
+      axios
+        .post("api/rateBook", {
+          user_id: this.user_id,
+          book_isbn: this.book_isbn,
+          rating: this.rating,
+        })
+        .then(() => {
+          console.log("Done!");
+        });
     },
   },
 };

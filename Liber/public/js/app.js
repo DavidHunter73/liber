@@ -3845,13 +3845,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: ["isbn"],
   data: function data() {
     return {
       rating: 0,
-      user_id: 1
+      user_id: 1,
+      prueba: "nada"
     };
   },
   computed: {
@@ -3862,13 +3880,17 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     rateBook: function rateBook(user_id, book_isbn, rating) {
       console.log("User_id: " + user_id + "\nBook_isbn: " + book_isbn + "\nRating: " + rating);
-      axios.post("api/rateBook", {
-        user_id: user_id,
-        book_isbn: book_isbn,
-        rating: rating
-      }).then(function () {
-        console.log("Done!");
+      /*axios.get("api/showRatings").then((response) => {
+        console.log(response.data);
+        //JSON.stringify(booksToStore);
+      });*/
+
+      axios.get("api/books").then(function (patata) {
+        console.log(patata.data); //console.log("Segunda base de datos obtenida!");
       });
+      /*axios.post("api/rateBook", { user_id, book_isbn, rating }).then(() => {
+        console.log("Done!");
+      });*/
     }
   }
 });
@@ -4005,13 +4027,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       preSearch: "",
       postSearch: "",
-      books: []
+      books: [],
+      user_id: "2",
+      book_isbn: "1",
+      rating: 0
     };
   },
   computed: {
@@ -4081,11 +4113,24 @@ __webpack_require__.r(__webpack_exports__);
       });*/
 
       axios.get("api/books").then(function (response) {
-        _this.books = response.data; //console.log("Segunda base de datos obtenida!");
+        _this.books = response.data;
+        console.log(response.data); //console.log("Segunda base de datos obtenida!");
       });
     },
     BookInformation: function BookInformation(isbn) {
       this.$router.push("/dhernandez/ProyectoFinal/liber/Liber/public/book/" + isbn);
+    },
+    rateBook: function rateBook() {
+      //axios.get("api/showRatings").then((response) => {
+      //  response.data;
+      //});
+      axios.post("api/rateBook", {
+        user_id: this.user_id,
+        book_isbn: this.book_isbn,
+        rating: this.rating
+      }).then(function () {
+        console.log("Done!");
+      });
     }
   }
 });
@@ -22532,38 +22577,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("p", [
-        _vm._v(
-          "Soy el libro con el isbn " +
-            _vm._s(_vm.isbn) +
-            ", que chulo " +
-            _vm._s(_vm.isbn2)
-        )
-      ]),
-      _vm._v(" "),
-      _c("star-rating", {
-        attrs: { rating: _vm.rating, "show-rating": false },
-        on: {
-          "rating-selected": function($event) {
-            return _vm.rateBook(_vm.user_id, _vm.isbn, _vm.rating)
-          }
-        },
-        model: {
-          value: _vm.rating,
-          callback: function($$v) {
-            _vm.rating = $$v
+  return _c("html", { attrs: { lang: "es" } }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "body",
+      [
+        _c(
+          "p",
+          {
+            on: {
+              click: function($event) {
+                return _vm.rateBook(_vm.user_id, _vm.isbn, _vm.rating)
+              }
+            }
           },
-          expression: "rating"
-        }
-      })
-    ],
-    1
-  )
+          [
+            _vm._v(
+              "\n      Soy el libro con el isbn " +
+                _vm._s(_vm.isbn) +
+                ", que chulo " +
+                _vm._s(_vm.isbn2) +
+                ". Esto es una\n      prueba: " +
+                _vm._s(_vm.prueba) +
+                "\n    "
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("star-rating", {
+          attrs: { rating: _vm.rating, "show-rating": false },
+          on: {
+            "rating-selected": function($event) {
+              return _vm.rateBook(_vm.user_id, _vm.isbn, _vm.rating)
+            }
+          },
+          model: {
+            value: _vm.rating,
+            callback: function($$v) {
+              _vm.rating = $$v
+            },
+            expression: "rating"
+          }
+        }),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
+            on: {
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.rateBook(_vm.user_id, _vm.isbn, _vm.rating)
+              }
+            }
+          },
+          [
+            _c("input", {
+              attrs: {
+                type: "text",
+                name: "search",
+                placeholder: "Busca un libro"
+              }
+            }),
+            _vm._v(" "),
+            _c("button", { attrs: { type: "submit", id: "search_button" } }, [
+              _vm._v("Buscar")
+            ])
+          ]
+        )
+      ],
+      1
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("head", [
+      _c("meta", { attrs: { charset: "UTF-8" } }),
+      _vm._v(" "),
+      _c("meta", {
+        attrs: { "http-equiv": "X-UA-Compatible", content: "IE=edge" }
+      }),
+      _vm._v(" "),
+      _c("meta", {
+        attrs: {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1.0"
+        }
+      }),
+      _vm._v(" "),
+      _c("title", [_vm._v("Liber")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -22695,115 +22804,131 @@ var render = function() {
   return _c("html", { attrs: { lang: "es" } }, [
     _vm._m(0),
     _vm._v(" "),
-    _c("body", [
-      _c("h1", [_vm._v("PÁGINA PRINCIPAL FUNCIONA?")]),
-      _vm._v(" "),
-      _c("div", [_vm._v("AQUI VA EL CARRUSEL")]),
-      _vm._v(" "),
-      _c(
-        "form",
-        {
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.SearchBooks($event)
-            }
-          }
-        },
-        [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.preSearch,
-                expression: "preSearch"
-              }
-            ],
-            attrs: {
-              type: "text",
-              name: "search",
-              placeholder: "Busca un libro"
-            },
-            domProps: { value: _vm.preSearch },
+    _c(
+      "body",
+      [
+        _c("h1", [_vm._v("PÁGINA PRINCIPAL FUNCIONA?")]),
+        _vm._v(" "),
+        _c("div", [_vm._v("AQUI VA EL CARRUSEL")]),
+        _vm._v(" "),
+        _c(
+          "form",
+          {
             on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.preSearch = $event.target.value
+              submit: function($event) {
+                $event.preventDefault()
+                return _vm.SearchBooks($event)
               }
             }
-          }),
-          _vm._v(" "),
-          _c("button", { attrs: { type: "submit", id: "search_button" } }, [
-            _vm._v("Buscar")
-          ])
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "div",
-        { attrs: { id: "books_searched" } },
-        _vm._l(_vm.booksFilter, function(b) {
-          return _c(
-            "div",
-            { key: b.isbn, attrs: { id: "book_container" } },
-            [
-              _c(
-                "h3",
+          },
+          [
+            _c("input", {
+              directives: [
                 {
-                  on: {
-                    click: function($event) {
-                      return _vm.BookInformation(b.isbn)
-                    }
-                  }
-                },
-                [_vm._v("Titulo: " + _vm._s(b.title))]
-              ),
-              _vm._v(" "),
-              _c(
-                "p",
-                {
-                  on: {
-                    click: function($event) {
-                      return _vm.BookInformation(b.isbn)
-                    }
-                  }
-                },
-                [_vm._v("Autor: " + _vm._s(b.author))]
-              ),
-              _vm._v(" "),
-              _c("img", {
-                attrs: { src: "../storage/app/" + b.cover },
-                on: {
-                  click: function($event) {
-                    return _vm.BookInformation(b.isbn)
-                  }
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.preSearch,
+                  expression: "preSearch"
                 }
-              }),
-              _vm._v(" "),
-              _c("star-rating", {
-                attrs: {
-                  rating: b.rating,
-                  "read-only": true,
-                  "show-rating": false
-                },
-                model: {
-                  value: b.rating,
-                  callback: function($$v) {
-                    _vm.$set(b, "rating", $$v)
+              ],
+              attrs: {
+                type: "text",
+                name: "search",
+                placeholder: "Busca un libro"
+              },
+              domProps: { value: _vm.preSearch },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.preSearch = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("button", { attrs: { type: "submit", id: "search_button" } }, [
+              _vm._v("Buscar")
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          { attrs: { id: "books_searched" } },
+          _vm._l(_vm.booksFilter, function(b) {
+            return _c(
+              "div",
+              { key: b.isbn, attrs: { id: "book_container" } },
+              [
+                _c(
+                  "h3",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.BookInformation(b.isbn)
+                      }
+                    }
                   },
-                  expression: "b.rating"
-                }
-              })
-            ],
-            1
-          )
-        }),
-        0
-      )
-    ])
+                  [_vm._v("Titulo: " + _vm._s(b.title))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "p",
+                  {
+                    on: {
+                      click: function($event) {
+                        return _vm.BookInformation(b.isbn)
+                      }
+                    }
+                  },
+                  [_vm._v("Autor: " + _vm._s(b.author))]
+                ),
+                _vm._v(" "),
+                _c("img", {
+                  attrs: { src: "../storage/app/" + b.cover },
+                  on: {
+                    click: function($event) {
+                      return _vm.BookInformation(b.isbn)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("star-rating", {
+                  attrs: {
+                    rating: b.rating,
+                    "read-only": true,
+                    "show-rating": false
+                  },
+                  model: {
+                    value: b.rating,
+                    callback: function($$v) {
+                      _vm.$set(b, "rating", $$v)
+                    },
+                    expression: "b.rating"
+                  }
+                })
+              ],
+              1
+            )
+          }),
+          0
+        ),
+        _vm._v(" "),
+        _c("star-rating", {
+          attrs: { rating: _vm.rating, "show-rating": false },
+          on: { "rating-selected": _vm.rateBook },
+          model: {
+            value: _vm.rating,
+            callback: function($$v) {
+              _vm.rating = $$v
+            },
+            expression: "rating"
+          }
+        })
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [
