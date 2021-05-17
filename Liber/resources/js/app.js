@@ -15,6 +15,7 @@ import home from './components/Home.vue';
 import book from './components/Book.vue';
 import genre from './components/Genre.vue';
 import login from './components/Login.vue';
+import pageNotFound from './components/404.vue';
 
 Vue.component('star-rating', StarRating);
 
@@ -41,7 +42,12 @@ const router = new VueRouter({
         {
             path: '/dhernandez/ProyectoFinal/Liber/liber/public/login/',
             component: login
+        },
+        {
+            path: "*",
+            component: pageNotFound
         }
+
     ]
 })
 
