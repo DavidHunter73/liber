@@ -14,7 +14,7 @@
       <img
         class="mx-auto"
         src="https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png"
-        alt="404"
+        alt="Logo Liber en blanco"
       />
     </router-link>
 
@@ -29,7 +29,7 @@
           <img
             class="mx-auto"
             src="https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png"
-            alt="404"
+            alt="Icono Github"
         /></a>
       </div>
 
@@ -39,7 +39,7 @@
           <img
             class="mx-auto"
             src="https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png"
-            alt="404"
+            alt="Icono Twitter"
         /></a>
       </div>
 
@@ -49,7 +49,7 @@
           <img
             class="mx-auto"
             src="https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png"
-            alt="404"
+            alt="Icono Instagram"
         /></a>
       </div>
 
@@ -59,7 +59,7 @@
           <img
             class="mx-auto"
             src="https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png"
-            alt="404"
+            alt="Icono Facebook"
         /></a>
       </div>
     </div>

@@ -19,12 +19,12 @@
           <img
             class="mx-auto"
             src="https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/YouShallNotPass.png"
-            alt="404"
+            alt="Error 404"
           />
 
           <br />
 
-          <p class="text-center sm:text-2xl text-xl">
+          <p class="text-center sm:text-2xl text-xl" lang="es">
             Vuelve sobre tus pasos antes de que sea demasiado tarde
           </p>
         </router-link>

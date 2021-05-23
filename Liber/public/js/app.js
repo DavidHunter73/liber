@@ -4199,56 +4199,58 @@ __webpack_require__.r(__webpack_exports__);
       //Actualiza la variable postSearch, que será usada a continuación
       this.postSearch = this.preSearch; //Saca información de la base de datos
 
-      /*axios.get("api/books").then((booksDB) => {
+      axios.get("api/books").then(function (booksDB) {
         //Variable que guardará los libros que no estén en la base de datos
-        let booksToStore = { books: [] };
-          console.log(booksDB);
-        console.log("El libro buscado es: " + this.postSearch);
-          //ESTO ES EL RAINFOREST QUE GUARDA COSAS NUEVAS EN LA BASE DE DATOS
-        const axios = require("axios");
-          // Parametros de Rainforest
-        const params = {
-          api_key: "B7E49921BBA24B8F8CD4335965DB8DA5",
+        var booksToStore = {
+          books: []
+        };
+        console.log(booksDB);
+        console.log("El libro buscado es: " + _this.postSearch); //ESTO ES EL RAINFOREST QUE GUARDA COSAS NUEVAS EN LA BASE DE DATOS
+
+        var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"); // Parametros de Rainforest
+
+
+        var params = {
+          api_key: "F5FA69E2271C49858CDC658BA456FB1C",
           amazon_domain: "amazon.com",
           type: "search",
-          search_term: this.postSearch,
-        };
-          // Haz el GET request a la API de Rainforest
-        axios
-          .get("https://api.rainforestapi.com/request", { params })
-          .then((response) => {
-            let exists = false;
-              console.log(response.data.search_results);
-              //Por cada cosa encontrada en rainforest...
-            response.data.search_results.forEach((apiBook) => {
-              console.log("Esto es un apiBook: " + apiBook.asin);
-                //Comprueba si el libro existe en la base de datos
-              booksDB.forEach((dbBook) => {
-                if (dbBook.isbn == apiBook.asin) {
-                  exists = true;
-                  console.log("Existe!");
-                }
-              });
-                //Si no existe, añade el libro a la base de datos
-              if (!exists) {
-                //booksToStoreObj = JSON.parse(booksToStore);
-                booksToStore["books"].push(apiBook);
-                  //axios.post("api/booksStore", booksToStore);
+          search_term: _this.postSearch
+        }; // Haz el GET request a la API de Rainforest
+
+        axios.get("https://api.rainforestapi.com/request", {
+          params: params
+        }).then(function (response) {
+          var exists = false;
+          console.log(response.data.search_results); //Por cada cosa encontrada en rainforest...
+
+          response.data.search_results.forEach(function (apiBook) {
+            console.log("Esto es un apiBook: " + apiBook.asin); //Comprueba si el libro existe en la base de datos
+
+            booksDB.forEach(function (dbBook) {
+              if (dbBook.isbn == apiBook.asin) {
+                exists = true;
+                console.log("Existe!");
               }
-                exists = false;
-            });
-            console.log("El Axios de Rainforest ha terminado");
+            }); //Si no existe, añade el libro a la base de datos
+
+            if (!exists) {
+              //booksToStoreObj = JSON.parse(booksToStore);
+              booksToStore["books"].push(apiBook); //axios.post("api/booksStore", booksToStore);
+            }
+
+            exists = false;
           });
-          //let booksToStoreString = JSON.stringify(booksToStore);
+          console.log("El Axios de Rainforest ha terminado");
+        }); //let booksToStoreString = JSON.stringify(booksToStore);
         //console.log(booksToStoreString);
-        axios.post("api/booksStore", booksToStore).then(() => {
-          axios.get("api/books").then((response) => {
-            this.books = response.data;
+
+        axios.post("api/booksStore", booksToStore).then(function () {
+          axios.get("api/books").then(function (response) {
+            _this.books = response.data;
             console.log("Segunda base de datos obtenida!");
           });
         });
-      });*/
-
+      });
       axios.get("api/books").then(function (response) {
         _this.books = response.data;
         console.log(response.data); //console.log("Segunda base de datos obtenida!");
@@ -22864,17 +22866,24 @@ var render = function() {
                 attrs: {
                   src:
                     "https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/YouShallNotPass.png",
-                  alt: "404"
+                  alt: "Error 404"
                 }
               }),
               _vm._v(" "),
               _c("br"),
               _vm._v(" "),
-              _c("p", { staticClass: "text-center sm:text-2xl text-xl" }, [
-                _vm._v(
-                  "\n          Vuelve sobre tus pasos antes de que sea demasiado tarde\n        "
-                )
-              ])
+              _c(
+                "p",
+                {
+                  staticClass: "text-center sm:text-2xl text-xl",
+                  attrs: { lang: "es" }
+                },
+                [
+                  _vm._v(
+                    "\n          Vuelve sobre tus pasos antes de que sea demasiado tarde\n        "
+                  )
+                ]
+              )
             ]
           )
         ],
@@ -23091,7 +23100,7 @@ var render = function() {
             attrs: {
               src:
                 "https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png",
-              alt: "404"
+              alt: "Logo Liber en blanco"
             }
           })
         ]
@@ -23128,7 +23137,7 @@ var staticRenderFns = [
               attrs: {
                 src:
                   "https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png",
-                alt: "404"
+                alt: "Icono Github"
               }
             })
           ])
@@ -23141,7 +23150,7 @@ var staticRenderFns = [
               attrs: {
                 src:
                   "https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png",
-                alt: "404"
+                alt: "Icono Twitter"
               }
             })
           ])
@@ -23154,7 +23163,7 @@ var staticRenderFns = [
               attrs: {
                 src:
                   "https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png",
-                alt: "404"
+                alt: "Icono Instagram"
               }
             })
           ])
@@ -23167,7 +23176,7 @@ var staticRenderFns = [
               attrs: {
                 src:
                   "https://dawjavi.insjoaquimmir.cat/dhernandez/ProyectoFinal/liber/Liber/resources/js/img/Logo_White.png",
-                alt: "404"
+                alt: "Icono Facebook"
               }
             })
           ])

@@ -79,8 +79,11 @@ export default {
       //Actualiza la variable postSearch, que será usada a continuación
       this.postSearch = this.preSearch;
 
+
+
+
       //Saca información de la base de datos
-      /*axios.get("api/books").then((booksDB) => {
+      axios.get("api/books").then((booksDB) => {
         //Variable que guardará los libros que no estén en la base de datos
         let booksToStore = { books: [] };
 
@@ -92,7 +95,7 @@ export default {
 
         // Parametros de Rainforest
         const params = {
-          api_key: "B7E49921BBA24B8F8CD4335965DB8DA5",
+          api_key: "F5FA69E2271C49858CDC658BA456FB1C",
           amazon_domain: "amazon.com",
           type: "search",
           search_term: this.postSearch,
@@ -139,7 +142,12 @@ export default {
             console.log("Segunda base de datos obtenida!");
           });
         });
-      });*/
+      });
+
+
+
+
+
 
       axios.get("api/books").then((response) => {
         this.books = response.data;
